@@ -40,6 +40,7 @@ export default class PetController {
 
   async listaPet(req: Request, res: Response) {
     const listaDePets = await this.repository.listaPet();
+
     return res.status(200).json(listaDePets);
   }
 
@@ -79,5 +80,13 @@ export default class PetController {
       return res.status(404).json({ message });
     }
     return res.sendStatus(204);
+  }
+
+  async buscaPetPeloPorte(req: Request, res: Response) {
+    const { porte } = req.query;
+    const listaDePets = await this.repository.buscaPetPeloPorte(
+      porte as EnumPorte
+    );
+    return res.status(200).json(listaDePets);
   }
 }

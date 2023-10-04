@@ -1,4 +1,5 @@
 import PetEntity from "../../entities/PetEntity";
+import EnumPorte from "../../enum/EnumPorte";
 
 export default interface InterfacePetRepository {
   criaPet(pet: PetEntity): void | Promise<void>;
@@ -13,4 +14,6 @@ export default interface InterfacePetRepository {
     idPet: number,
     idAdotante: number
   ): Promise<{ success: boolean; message?: string }> | void;
+
+  buscaPetPeloPorte(porte: EnumPorte): Promise<PetEntity[]> | PetEntity[];
 }

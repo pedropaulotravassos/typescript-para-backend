@@ -1,9 +1,11 @@
 import { DataSource } from "typeorm";
-import PetEntity from "../entities/PetEntity";
+import path from "path";
+
+const entitiesPath = path.join(__dirname, "../entities");
 
 export const AppDataSource = new DataSource({
   type: "sqlite",
   database: "./src/config/database.sqlite",
-  entities: [PetEntity],
+  entities: [`${entitiesPath}/*`],
   synchronize: true,
 });

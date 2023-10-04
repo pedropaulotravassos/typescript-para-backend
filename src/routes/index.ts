@@ -1,7 +1,6 @@
 import express from "express";
-import petRoutes from "../routes/petRoutes";
+import petRouter from "../routes/petRouter";
 const router = (app: express.Router) => {
-  app.use("/pets", petRoutes);
+  app.use("/pets", petRouter);
 };
-
 export default router;

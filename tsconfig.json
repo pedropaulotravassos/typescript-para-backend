@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "noImplicitAny": true,
     "esModuleInterop": true,
-    "outDir": "./build"
+    "noImplicitAny": true,
+    "outDir": "./build",
+    "noEmitOnError": true
   },
   "include": ["./src/**/*", "./server.ts"]
 }

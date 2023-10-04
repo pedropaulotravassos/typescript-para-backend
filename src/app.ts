@@ -1,31 +1,30 @@
-import express from "express";
+import express, { Request, Response } from "express";
 
 const app = express();
 app.use(express.json());
 
-app.get("/", (_, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Bem vindo ao curso de TypeScript!");
 });
 
-function criaPet(id, nome, especie, idade, adotado) {
+function criaPet(id: number, nome: string, especie: string, idade: number) {
   return {
     id,
     nome,
     especie,
     idade,
-    adotado,
   };
 }
 
-let id = "0";
+let id = 0;
 function geraId() {
   id = id + 1;
   return id;
 }
 
-app.post("/pets", (_, res) => {
-  const pet1 = criaPet(geraId(), "Bolt", "cachorro", 3, false);
-  const pet2 = criaPet(geraId(), "Mel", "gato", 2, false);
+app.post("/pets", (req: Request, res: Response) => {
+  const pet1 = criaPet(geraId(), "Bolt", "cachorro", 3);
+  const pet2 = criaPet(geraId(), "Mel", "gato", 2);
 
   res.send([pet1, pet2]);
 });

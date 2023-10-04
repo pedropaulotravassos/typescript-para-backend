@@ -18,4 +18,8 @@ router.delete("/:id", (req, res) =>
   adotanteController.deletaAdotante(req, res)
 );
 
+router.patch("/:id", (req, res) =>
+  adotanteController.atualizaEnderecoAdotante(req, res)
+);
+
 export default router;

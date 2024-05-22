@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import AdotanteRepository from "../repositories/AdotanteRepository";
 import AdotanteEntity from "../entities/AdotanteEntity";
+import EnderecoEntity from "../entities/EnderecoEntity";
 
 export default class AdotanteController {
   constructor(private repository: AdotanteRepository) {}
@@ -42,5 +43,19 @@ export default class AdotanteController {
     const result = await this.repository.deletaAdotante(id);
 
     res.status(200).json(result);
+  }
+
+  async atualizaEnderecoAdotante(req: Request, res: Response) {
+    const id = Number(req.params.id);
+
+    const { success, message } = await this.repository.atualizaEnderecoAdotante(
+      id,
+      req.body as EnderecoEntity
+    );
+
+    if (!success) {
+      res.status(404).json({ message });
+    }
+    res.status(200).json({ message });
   }
 }

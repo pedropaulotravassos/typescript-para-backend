@@ -1,4 +1,6 @@
-import { PrimaryGeneratedColumn, Column } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+
+@Entity()
 export default class EnderecoEntity {
   @PrimaryGeneratedColumn()
   id!: number;

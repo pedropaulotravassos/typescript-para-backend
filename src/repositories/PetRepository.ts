@@ -18,25 +18,35 @@ export default class PetRepository implements InterfacePetRepository {
   async atualizaPet(
     id: number,
     newPetData: PetEntity
-  ): Promise<{ success: boolean; messagem?: string }> {
+  ): Promise<{ success: boolean; message?: string }> {
     const petToUpDate = await this.repository.findOne({ where: { id } });
 
     if (!petToUpDate) {
-      return { success: false, messagem: "Pet não encontrado" };
+      return { success: false, message: "Pet não encontrado" };
     }
 
     Object.assign(petToUpDate, newPetData);
     this.repository.save(petToUpDate);
-    return { success: true, messagem: "Pet atualizado" };
+    return { success: true, message: "Pet atualizado" };
   }
   async deletaPet(
     id: number
-  ): Promise<{ success: boolean; messagem?: string }> {
+  ): Promise<{ success: boolean; message?: string }> {
     const petToUpDate = await this.repository.findOne({ where: { id } });
     if (!petToUpDate) {
-      return { success: false, messagem: "Pet não encontrado" };
+      return { success: false, message: "Pet não encontrado" };
     }
     this.repository.delete(id);
-    return { success: true, messagem: "Pet removido" };
+    return { success: true, message: "Pet removido" };
+  }
+
+  async adotaPet(id_pet: number, id_adotante: number): Promise<{ success: boolean; message?: string }> {
+        try {
+          
+          return { success: true, message: "Pet adotado com sucesso" }
+        } catch (error) {
+          return {success: false, message: "Erro ao adotar pet"}
+          
+        }
   }
 }

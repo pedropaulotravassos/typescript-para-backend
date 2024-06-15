@@ -20,7 +20,7 @@ export default class AdotanteRepository {
   async atualizaAdotante(
     id: number,
     newAdotanteData: AdotanteEntity
-  ): Promise<{ success: boolean; message?: string }> {
+  ): Promise<{ success: boolean; message: string }> {
     try {
       const AdotanteToUpDate = await this.repository.findOne({ where: { id } });
       if (!AdotanteToUpDate) {
@@ -41,7 +41,7 @@ export default class AdotanteRepository {
 
   async deletaAdotante(
     id: number
-  ): Promise<{ success: boolean; message?: string }> {
+  ): Promise<{ success: boolean; message: string }> {
     try {
       const AdotanteToUpDate = await this.repository.findOne({ where: { id } });
       if (!AdotanteToUpDate) {

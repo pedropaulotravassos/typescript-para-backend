@@ -2,11 +2,19 @@ import { Request, Response } from "express";
 import AdotanteRepository from "../repositories/AdotanteRepository";
 import AdotanteEntity from "../entities/AdotanteEntity";
 import EnderecoEntity from "../entities/EnderecoEntity";
+import {
+  TipoRequestBodyAdotante,
+  TipoRequestParamsAdotante,
+  TipoResponseBodyAdotante,
+} from "../tipos/TiposAdotantes"
 
 export default class AdotanteController {
   constructor(private repository: AdotanteRepository) {}
 
-  criaAdotante(req: Request, res: Response) {
+  criaAdotante(
+    req: Request<TipoRequestParamsAdotante, any, TipoRequestBodyAdotante>,
+    res: Response<TipoResponseBodyAdotante>
+  ) {
     const { nome, senha, celular, foto, endereco } = <AdotanteEntity>req.body;
 
     const novoAdotante = new AdotanteEntity(
@@ -18,44 +26,73 @@ export default class AdotanteController {
     );
 
     this.repository.criaAdotante(novoAdotante);
-    return res.status(201).json(novoAdotante);
+    return res.status(201).json({
+      data: { id: novoAdotante.id, nome, celular },
+      mensagem: "Adotante criado com sucesso",
+      sucesso: true,
+    });
   }
 
-  async listaAdotante(req: Request, res: Response) {
+  async listaAdotante(
+    req: Request<TipoRequestParamsAdotante, any, TipoRequestBodyAdotante>,
+    res: Response<TipoResponseBodyAdotante>
+  ) {
     const listaDeAdotantes = await this.repository.listaAdotante();
-    return res.status(200).json(listaDeAdotantes);
+    const data = listaDeAdotantes.map((adotante) => {
+      return {
+        id: adotante.id,
+        nome: adotante.nome,
+        celular: adotante.celular,
+      };
+    });
+    return res.status(200).json({
+      data,
+      mensagem: "Adotante criado com sucesso",
+      sucesso: true,
+    });
   }
 
-  async atualizaAdotante(req: Request, res: Response) {
-    const id: number = parseInt(req.params.id);
+  async atualizaAdotante(
+    req: Request<TipoRequestParamsAdotante, any, TipoRequestBodyAdotante>,
+    res: Response<TipoResponseBodyAdotante>
+  ) {
+    const { id } = req.params;
     const { nome, senha, celular, foto, endereco } = <AdotanteEntity>req.body;
 
     let Adotante = new AdotanteEntity(nome, senha, celular, foto, endereco);
 
-    const result = await this.repository.atualizaAdotante(id, Adotante);
+    const {success, message} = await this.repository.atualizaAdotante(Number(id), Adotante);
 
-    res.status(200).json(result);
+    res.status(200).json({sucesso: success, mensagem: message});
   }
 
-  async deletaAdotante(req: Request, res: Response) {
-    const id: number = parseInt(req.params.id);
+  async deletaAdotante(
+    req: Request<TipoRequestParamsAdotante, any, TipoRequestBodyAdotante>,
+    res: Response<TipoResponseBodyAdotante>
+  ) {
+    const { id } = req.params;
 
-    const result = await this.repository.deletaAdotante(id);
+    const {success, message} = await this.repository.deletaAdotante(Number(id));
 
-    res.status(200).json(result);
+    res.status(200).json({sucesso: success, mensagem: message});
   }
 
-  async atualizaEnderecoAdotante(req: Request, res: Response) {
+  async atualizaEnderecoAdotante(
+    req: Request<TipoRequestParamsAdotante, any, TipoRequestBodyAdotante>,
+    res: Response<TipoResponseBodyAdotante>
+  ) {
     const id = Number(req.params.id);
 
     const { success, message } = await this.repository.atualizaEnderecoAdotante(
       id,
-      req.body as EnderecoEntity
+      req.body.endereco as EnderecoEntity
     );
 
     if (!success) {
-      res.status(404).json({ message });
+      res
+        .status(404)
+        .json({ mensagem: message, error: message, sucesso: false });
     }
-    res.status(200).json({ message });
+    res.status(200).json({ mensagem: message, error: message, sucesso: false });
   }
 }

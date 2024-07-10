@@ -74,7 +74,7 @@ export default class PetController {
     return res.status(200).json({
       data: listaDePets.map((pet) => {
         const { id, nome, especie, porte } = pet;
-        return { id, nome, especie, porte };
+        return { id, nome, especie, porte: porte ?? undefined };
       }),
       sucesso: true,
       mensagem: "Pets cadastrados",
